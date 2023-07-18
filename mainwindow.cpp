@@ -76,6 +76,14 @@ MainWindow::MainWindow(QWidget *parent):
             SLOT(ChangeNumberSign())
 
             );
+        connect(
+
+
+            ui->Clear,
+            SIGNAL(released()),
+            this,
+            SLOT(ClearButtonPressed())
+            );
 
 
     }
@@ -134,13 +142,15 @@ void MainWindow::NumPressed()
       {
           subTrigger = true;
       }
+
       ui->Display->setText("");
     }
     void MainWindow::EqualButtonPressed(){
-    double solution = 0.0;
+      static double solution;
     QString displayVal = ui->Display->text();
     double dblDisplayVal = displayVal.toDouble();
-    if(addTrigger || subTrigger || multTrigger ||divTrigger){
+
+    if(addTrigger || subTrigger || multTrigger || divTrigger){
 
       if(addTrigger){
           solution = calcVal + dblDisplayVal;
@@ -151,10 +161,17 @@ void MainWindow::NumPressed()
       else if(multTrigger){
           solution = calcVal * dblDisplayVal;
       }
-      else
-      {
+      else {
           solution = calcVal / dblDisplayVal;
       }
+
+      divTrigger = false;
+      multTrigger = false;
+      addTrigger = false;
+      subTrigger = false;
+
+
+
     }
     ui->Display->setText(QString::number(solution));
     }
@@ -170,8 +187,28 @@ void MainWindow::ChangeNumberSign(){
     ui->Display->setText(QString::number(dblDisplayValSign));
 
     }
+}
+
+void MainWindow::ClearButtonPressed(){
+    QString displayVal = ui->Display->text();
+    QRegExp reg("[-+]?[0-9.]*");
+    if(reg.exactMatch(displayVal)){
+    double dblDisplayVal = displayVal.toDouble();
+    double dblDisplayValCLEAR = 0 * dblDisplayVal;
+    ui->Display->setText(QString::number(dblDisplayValCLEAR));
+
+    }
+
+
+
+
+
+
 
 }
+
+
+
 
 
 

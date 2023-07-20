@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "qobjectdefs.h"
 #include "ui_mainwindow.h"
 
 double calcVal = 0.0;
@@ -14,79 +15,86 @@ MainWindow::MainWindow(QWidget *parent):
     ui->setupUi(this);
 
     ui->Display->setText(QString::number(calcVal));
-    QPushButton *numButtons[10];
+    QAbstractButton *numButtons[10];
     for(int i = 0; i < 10; ++i)
     {
         QString butName = "Button" + QString::number(i);
-        numButtons[i] = MainWindow::findChild<QPushButton *>(butName);
-        connect(numButtons[i], SIGNAL(released()), this, SLOT(NumPressed()));
+        numButtons[i] = MainWindow::findChild<QAbstractButton *>(butName);
+        connect(numButtons[i], SIGNAL(released(QAbstractButton *)), this, SLOT(NumPressed(QAbstractButton *)));
     }
 
-        connect(
+    connect(
 
 
-            ui->adder,
-            SIGNAL(released()),
-            this,
-            SLOT(MathButtonPressed()))
+        ui->adder,
+        SIGNAL(released(QAbstractButton  *)),
+        this,
+        SLOT(MathButtonPressed(QAbstractButton *)))
 
-            ;
-        connect(
-
-
-            ui->subtractor,
-            SIGNAL(released()),
-            this,
-            SLOT(MathButtonPressed()))
-
-            ;
-        connect(
+        ;
+    connect(
 
 
-            ui->divider,
-            SIGNAL(released()),
-            this,
-            SLOT(MathButtonPressed()))
+        ui->subtractor,
+        SIGNAL(released(QAbstractButton *)),
+        this,
+        SLOT(MathButtonPressed(QAbstractButton *)))
 
-            ;
-        connect(
-
-
-            ui->multiplier,
-            SIGNAL(released()),
-            this,
-            SLOT(MathButtonPressed()))
-
-            ;
-        connect(
+        ;
+    connect(
 
 
-            ui->Equals,
-            SIGNAL(released()),
-            this,
-            SLOT(EqualButtonPressed()))
+        ui->divider,
+        SIGNAL(released(QAbstractButton *)),
+        this,
+        SLOT(MathButtonPressed(QAbstractButton *)))
 
-            ;
-        connect(
-
-
-            ui->ChangeSign,
-            SIGNAL(released()),
-            this,
-            SLOT(ChangeNumberSign())
-
-            );
-        connect(
+        ;
+    connect(
 
 
-            ui->Clear,
-            SIGNAL(released()),
-            this,
-            SLOT(ClearButtonPressed())
-            );
+        ui->multiplier,
+        SIGNAL(released(QAbstractButton *)),
+        this,
+        SLOT(MathButtonPressed(QAbstractButton *)))
+
+        ;
+    connect(
 
 
-    }
+        ui->Equals,
+        SIGNAL(released(QAbstractButton *)),
+        this,
+        SLOT(EqualButtonPressed(QAbstractButton *)))
+
+        ;
+    connect(
+
+
+        ui->ChangeSign,
+        SIGNAL(released()),
+        this,
+        SLOT(ChangeNumberSign())
+
+        );
+    connect(
+
+
+        ui->Clear,
+        SIGNAL(released(QAbstractButton *)),
+        this,
+        SLOT(ClearButtonPressed(QAbstractButton *))
+        );
+
+    connect (
+        ui->Delete,
+        SIGNAL(released(QAbstractButton *)),
+        this,
+        SLOT(DeleteButtonPressed(QAbstractButton *))
+        );
+
+
+}
 
 
 
@@ -95,9 +103,9 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-void MainWindow::NumPressed()
+void MainWindow::NumPressed(QAbstractButton *button)
 {
-    QPushButton *button = (QPushButton *)sender();
+
     QString butVal = button->text();
     QString displayVal = ui->Display->text();
     if((displayVal.toDouble()==0) || (displayVal.toDouble()==0.0))
@@ -115,88 +123,150 @@ void MainWindow::NumPressed()
     }
 }
 
- void MainWindow::MathButtonPressed()
-    {
-
-      divTrigger = false;
-      multTrigger = false;
-      addTrigger = false;
-      subTrigger = false;
-      QString displayVal = ui->Display->text();
-      calcVal = displayVal.toDouble();
-      QPushButton *button = (QPushButton *)sender();
-      QString butVal = button->text();
-      if(QString::compare(butVal, "/", Qt::CaseInsensitive) == 0)
+void MainWindow::MathButtonPressed(QAbstractButton *button)
 {
-          divTrigger = true;
-          }
-      else if(QString::compare(butVal, "*", Qt::CaseInsensitive) == 0)
-      {
-          multTrigger = true;
-      }
-      else if(QString::compare(butVal, "+", Qt::CaseInsensitive) == 0)
-      {
-          addTrigger = true;
-      }
-      else
-      {
-          subTrigger = true;
-      }
 
-      ui->Display->setText("");
+    divTrigger = false;
+    multTrigger = false;
+    addTrigger = false;
+    subTrigger = false;
+    QString displayVal = ui->Display->text();
+    calcVal = displayVal.toDouble();
+    QString butVal = button->text();
+    if(QString::compare(butVal, "/", Qt::CaseInsensitive) == 0)
+    {
+        divTrigger = true;
     }
-    void MainWindow::EqualButtonPressed(){
-      static double solution;
+    else if(QString::compare(butVal, "*", Qt::CaseInsensitive) == 0)
+    {
+        multTrigger = true;
+    }
+    else if(QString::compare(butVal, "+", Qt::CaseInsensitive) == 0)
+    {
+        addTrigger = true;
+    }
+    else
+    {
+        subTrigger = true;
+    }
+
+    ui->Display->setText(butVal);
+}
+void MainWindow::EqualButtonPressed(QAbstractButton*){
+    static double solution;
     QString displayVal = ui->Display->text();
     double dblDisplayVal = displayVal.toDouble();
 
     if(addTrigger || subTrigger || multTrigger || divTrigger){
 
-      if(addTrigger){
-          solution = calcVal + dblDisplayVal;
-      }
-      else if(subTrigger){
-          solution = calcVal - dblDisplayVal;
-      }
-      else if(multTrigger){
-          solution = calcVal * dblDisplayVal;
-      }
-      else {
-          solution = calcVal / dblDisplayVal;
-      }
+        if(addTrigger){
+            solution = calcVal + dblDisplayVal;
+        }
+        else if(subTrigger){
+            solution = calcVal - dblDisplayVal;
+        }
+        else if(multTrigger){
+            solution = calcVal * dblDisplayVal;
+        }
+        else {
+            solution = calcVal / dblDisplayVal;
+        }
 
-      divTrigger = false;
-      multTrigger = false;
-      addTrigger = false;
-      subTrigger = false;
-
-
-
+        divTrigger = false;
+        multTrigger = false;
+        addTrigger = false;
+        subTrigger = false;
     }
     ui->Display->setText(QString::number(solution));
-    }
-
-
-
+}
 void MainWindow::ChangeNumberSign(){
     QString displayVal = ui->Display->text();
     QRegExp reg("[-+]?[0-9.]*");
     if(reg.exactMatch(displayVal)){
-    double dblDisplayVal = displayVal.toDouble();
-    double dblDisplayValSign = -1 * dblDisplayVal;
-    ui->Display->setText(QString::number(dblDisplayValSign));
+        double dblDisplayVal = displayVal.toDouble();
+        double dblDisplayValSign = -1 * dblDisplayVal;
+        ui->Display->setText(QString::number(dblDisplayValSign));
 
     }
 }
-
-void MainWindow::ClearButtonPressed(){
+void MainWindow::ClearButtonPressed(QAbstractButton*){
     QString displayVal = ui->Display->text();
     QRegExp reg("[-+]?[0-9.]*");
     if(reg.exactMatch(displayVal)){
-    double dblDisplayVal = displayVal.toDouble();
-    double dblDisplayValCLEAR = 0 * dblDisplayVal;
-    ui->Display->setText(QString::number(dblDisplayValCLEAR));
+        double dblDisplayVal = displayVal.toDouble();
+        double dblDisplayValCLEAR = 0 * dblDisplayVal;
+        ui->Display->setText(QString::number(dblDisplayValCLEAR));
+    }
+}
+void MainWindow::DeleteButtonPressed(QAbstractButton*)
+{
 
+    QString displayLabel = ui->Display->text();
+
+
+    if (displayLabel.length() == 0) {
+        return;
+    }
+
+    displayLabel.QString::chop(1);
+    //Set number back to display
+    ui->Display->setText(displayLabel);
+}
+    void MainWindow::keyPressEvent(QKeyEvent *e) {
+        switch (e->key()) {
+        //Numbers
+        case Qt::Key_1:
+            NumPressed(ui->Button1);
+            break;
+        case Qt::Key_2:
+            NumPressed(ui->Button2);
+            break;
+        case Qt::Key_3:
+            NumPressed(ui->Button3);
+            break;
+        case Qt::Key_4:
+            NumPressed(ui->Button4);
+            break;
+        case Qt::Key_5:
+            NumPressed(ui->Button5);
+            break;
+        case Qt::Key_6:
+            NumPressed(ui->Button6);
+            break;
+        case Qt::Key_7:
+            NumPressed(ui->Button7);
+            break;
+        case Qt::Key_8:
+            NumPressed(ui->Button8);
+            break;
+        case Qt::Key_9:
+            NumPressed(ui->Button9);
+            break;
+        case Qt::Key_0:
+            NumPressed(ui->Button0);
+            break;
+        case Qt::Key_Plus:
+            MathButtonPressed(ui->adder);
+            break;
+        case Qt::Key_Minus:
+            MathButtonPressed(ui->subtractor);
+            break;
+        case Qt::Key_Asterisk:
+            MathButtonPressed(ui->multiplier);
+            break;
+        case Qt::Key_Slash:
+            MathButtonPressed(ui->divider);
+            break;
+        case Qt::Key_Enter:
+            EqualButtonPressed(ui->Equals);
+            break;
+        case Qt::Key_G:
+            ClearButtonPressed(ui->Clear);
+            break;
+        case Qt::Key_Backspace:
+            DeleteButtonPressed(ui->Clear);
+            break;
+        }
     }
 
 
@@ -205,13 +275,10 @@ void MainWindow::ClearButtonPressed(){
 
 
 
+
+
+void MainWindow::on_Clear_released()
+{
+
 }
-
-
-
-
-
-
-
-
 

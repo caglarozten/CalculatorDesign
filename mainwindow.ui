@@ -573,28 +573,6 @@ padding: 5px;
       </property>
      </widget>
     </item>
-    <item row="6" column="0">
-     <widget class="QPushButton" name="Clear">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton{
-background-color: #C0C0C0;
-border: 1px solid gray;
-padding: 5px;
-}
-QPushButton:pressed{
-background-color: #A9A9A9;
-border: 1px solid gray;
-padding: 5px;
-}</string>
-      </property>
-      <property name="text">
-       <string>AC yg</string>
-      </property>
-     </widget>
-    </item>
     <item row="2" column="1">
      <widget class="QPushButton" name="Button8">
       <property name="styleSheet">
@@ -870,6 +848,25 @@ padding: 5px;
        <font>
         <pointsize>30</pointsize>
        </font>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QPushButton" name="Clear">
+      <property name="styleSheet">
+       <string notr="true">QPushButton{
+background-color: #C0C0C0;
+border: 1px solid gray;
+padding: 5px;
+}
+QPushButton:pressed{
+background-color: #A9A9A9;
+border: 1px solid gray;
+padding: 5px;
+}</string>
+      </property>
+      <property name="text">
+       <string>AC</string>
       </property>
      </widget>
     </item>

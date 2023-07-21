@@ -29,7 +29,14 @@ private slots:
     void ChangeNumberSign();
     void ClearButtonPressed(QAbstractButton *button);
     void DeleteButtonPressed(QAbstractButton *button);
+    void NumPressed();
+    void MathButtonPressed();
+    void EqualButtonPressed();
+    void ClearButtonPressed();
+    void DeleteButtonPressed();
 
-    void on_Clear_released();
+
+
+
 };
 #endif // MAINWINDOW_H

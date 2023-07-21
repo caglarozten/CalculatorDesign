@@ -14,13 +14,15 @@ MainWindow::MainWindow(QWidget *parent):
 {
     ui->setupUi(this);
 
-    ui->Display->setText(QString::number(calcVal));
+    ui->Display->setPlainText(QString::number(calcVal));
     QAbstractButton *numButtons[10];
     for(int i = 0; i < 10; ++i)
     {
         QString butName = "Button" + QString::number(i);
         numButtons[i] = MainWindow::findChild<QAbstractButton *>(butName);
         connect(numButtons[i], SIGNAL(released(QAbstractButton *)), this, SLOT(NumPressed(QAbstractButton *)));
+               connect(numButtons[i], SIGNAL(released()), this, SLOT(NumPressed()));
+
     }
 
     connect(
@@ -32,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent):
         SLOT(MathButtonPressed(QAbstractButton *)))
 
         ;
+
     connect(
 
 
@@ -41,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent):
         SLOT(MathButtonPressed(QAbstractButton *)))
 
         ;
+
+
     connect(
 
 
@@ -50,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent):
         SLOT(MathButtonPressed(QAbstractButton *)))
 
         ;
+
     connect(
 
 
@@ -59,6 +65,7 @@ MainWindow::MainWindow(QWidget *parent):
         SLOT(MathButtonPressed(QAbstractButton *)))
 
         ;
+
     connect(
 
 
@@ -68,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent):
         SLOT(EqualButtonPressed(QAbstractButton *)))
 
         ;
+
     connect(
 
 
@@ -94,7 +102,17 @@ MainWindow::MainWindow(QWidget *parent):
         );
 
 
+
+
+
 }
+
+
+
+
+
+
+
 
 
 
@@ -107,22 +125,46 @@ void MainWindow::NumPressed(QAbstractButton *button)
 {
 
     QString butVal = button->text();
-    QString displayVal = ui->Display->text();
+    QString displayVal = ui->Display->toPlainText();
     if((displayVal.toDouble()==0) || (displayVal.toDouble()==0.0))
     {
-        ui->Display->setText(butVal);
+        ui->Display->setPlainText(butVal);
 
     }
     else
     {
         QString newVal = displayVal + butVal;
         double dblNewVal = newVal.toDouble();
-        ui->Display->setText(QString::number(dblNewVal, 'g',16));
+        ui->Display->setPlainText(QString::number(dblNewVal, 'g',16));
+        ui->Display->setPlainText(QString::number(dblNewVal, 'g',16));
+
 
 
     }
 }
 
+
+void MainWindow::NumPressed()
+{
+    QPushButton *button = (QPushButton *)sender();
+    QString butVal = button->text();
+    QString displayVal = ui->Display->toPlainText();
+    if((displayVal.toDouble()==0) || (displayVal.toDouble()==0.0))
+    {
+        ui->Display->setPlainText(butVal);
+
+    }
+    else
+    {
+        QString newVal = displayVal + butVal;
+        double dblNewVal = newVal.toDouble();
+        ui->Display->setPlainText(QString::number(dblNewVal, 'g',16));
+
+
+
+
+    }
+}
 void MainWindow::MathButtonPressed(QAbstractButton *button)
 {
 
@@ -130,7 +172,7 @@ void MainWindow::MathButtonPressed(QAbstractButton *button)
     multTrigger = false;
     addTrigger = false;
     subTrigger = false;
-    QString displayVal = ui->Display->text();
+    QString displayVal = ui->Display->toPlainText();
     calcVal = displayVal.toDouble();
     QString butVal = button->text();
     if(QString::compare(butVal, "/", Qt::CaseInsensitive) == 0)
@@ -150,11 +192,43 @@ void MainWindow::MathButtonPressed(QAbstractButton *button)
         subTrigger = true;
     }
 
-    ui->Display->setText(butVal);
+    ui->Display->setPlainText(butVal);
+}
+
+
+void MainWindow::MathButtonPressed()
+{
+
+    divTrigger = false;
+    multTrigger = false;
+    addTrigger = false;
+    subTrigger = false;
+    QString displayVal = ui->Display->toPlainText();
+    calcVal = displayVal.toDouble();
+    QPushButton *button = (QPushButton *)sender();
+    QString butVal = button->text();
+    if(QString::compare(butVal, "/", Qt::CaseInsensitive) == 0)
+    {
+        divTrigger = true;
+    }
+    else if(QString::compare(butVal, "*", Qt::CaseInsensitive) == 0)
+    {
+        multTrigger = true;
+    }
+    else if(QString::compare(butVal, "+", Qt::CaseInsensitive) == 0)
+    {
+        addTrigger = true;
+    }
+    else
+    {
+        subTrigger = true;
+    }
+
+    ui->Display->setPlainText(butVal);
 }
 void MainWindow::EqualButtonPressed(QAbstractButton*){
     static double solution;
-    QString displayVal = ui->Display->text();
+    QString displayVal = ui->Display->toPlainText();
     double dblDisplayVal = displayVal.toDouble();
 
     if(addTrigger || subTrigger || multTrigger || divTrigger){
@@ -177,40 +251,102 @@ void MainWindow::EqualButtonPressed(QAbstractButton*){
         addTrigger = false;
         subTrigger = false;
     }
-    ui->Display->setText(QString::number(solution));
+    ui->Display->setPlainText(QString::number(solution));
+}
+
+void MainWindow::EqualButtonPressed(){
+    static double solution;
+    QString displayVal = ui->Display->toPlainText();
+    double dblDisplayVal = displayVal.toDouble();
+
+    if(addTrigger || subTrigger || multTrigger || divTrigger){
+
+        if(addTrigger){
+            solution = calcVal + dblDisplayVal;
+        }
+        else if(subTrigger){
+            solution = calcVal - dblDisplayVal;
+        }
+        else if(multTrigger){
+            solution = calcVal * dblDisplayVal;
+        }
+        else {
+            solution = calcVal / dblDisplayVal;
+        }
+
+        divTrigger = false;
+        multTrigger = false;
+        addTrigger = false;
+        subTrigger = false;
+    }
+    ui->Display->setPlainText(QString::number(solution));
+
+
 }
 void MainWindow::ChangeNumberSign(){
-    QString displayVal = ui->Display->text();
+    QString displayVal = ui->Display->toPlainText();
     QRegExp reg("[-+]?[0-9.]*");
     if(reg.exactMatch(displayVal)){
         double dblDisplayVal = displayVal.toDouble();
         double dblDisplayValSign = -1 * dblDisplayVal;
-        ui->Display->setText(QString::number(dblDisplayValSign));
+        ui->Display->setPlainText(QString::number(dblDisplayValSign));
 
     }
 }
 void MainWindow::ClearButtonPressed(QAbstractButton*){
-    QString displayVal = ui->Display->text();
+    QString displayVal = ui->Display->toPlainText();
     QRegExp reg("[-+]?[0-9.]*");
     if(reg.exactMatch(displayVal)){
         double dblDisplayVal = displayVal.toDouble();
         double dblDisplayValCLEAR = 0 * dblDisplayVal;
-        ui->Display->setText(QString::number(dblDisplayValCLEAR));
+        ui->Display->setPlainText(QString::number(dblDisplayValCLEAR));
     }
 }
+
+void MainWindow::ClearButtonPressed(){
+    QString displayVal = ui->Display->toPlainText();
+    QRegExp reg("[-+]?[0-9.]*");
+    if(reg.exactMatch(displayVal)){
+        double dblDisplayVal = displayVal.toDouble();
+        double dblDisplayValCLEAR = 0 * dblDisplayVal;
+        ui->Display->setPlainText(QString::number(dblDisplayValCLEAR));
+    }
+}
+
 void MainWindow::DeleteButtonPressed(QAbstractButton*)
 {
 
-    QString displayLabel = ui->Display->text();
+    QString displayLabel = ui->Display->toPlainText();
 
 
     if (displayLabel.length() == 0) {
         return;
     }
 
+
+
     displayLabel.QString::chop(1);
     //Set number back to display
-    ui->Display->setText(displayLabel);
+    ui->Display->setPlainText(displayLabel);
+}
+
+
+
+void MainWindow::DeleteButtonPressed()
+{
+
+    QString displayLabel = ui->Display->toPlainText();
+
+
+    if (displayLabel.length() == 0) {
+        return;
+    }
+
+
+
+    displayLabel.QString::chop(1);
+    //Set number back to display
+    ui->Display->setPlainText(displayLabel);
 }
     void MainWindow::keyPressEvent(QKeyEvent *e) {
         switch (e->key()) {
@@ -277,8 +413,5 @@ void MainWindow::DeleteButtonPressed(QAbstractButton*)
 
 
 
-void MainWindow::on_Clear_released()
-{
 
-}
 

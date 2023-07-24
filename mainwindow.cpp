@@ -12,10 +12,12 @@ bool oldnumber = false;
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
     ui(new Ui::MainWindow)
+
 {
     ui->setupUi(this);
 
     ui->Display->setPlainText(QString::number(calcVal));
+
     ui->HistoryLine->setPlainText("");
     QAbstractButton *numButtons[10];
     for(int i = 0; i < 10; ++i)
@@ -213,7 +215,7 @@ void MainWindow::NumPressed(QAbstractButton *button)
 
 
     }
-    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + butVal);
+
 
 
 }
@@ -242,7 +244,6 @@ void MainWindow::NumPressed()
 
 
     }
-    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + butVal);
 
 }
 void MainWindow::MathButtonPressed(QAbstractButton *button)
@@ -273,7 +274,7 @@ void MainWindow::MathButtonPressed(QAbstractButton *button)
     }
 
     ui->Display->setPlainText("");
-    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + butVal);
+    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + displayVal + butVal);
 
 }
 
@@ -307,7 +308,7 @@ void MainWindow::MathButtonPressed()
     }
 
     ui->Display->setPlainText("");
-    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + butVal);
+    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + displayVal + butVal);
 
 }
 void MainWindow::EqualButtonPressed(QAbstractButton*){
@@ -336,7 +337,7 @@ void MainWindow::EqualButtonPressed(QAbstractButton*){
         subTrigger = false;
     }
     ui->Display->setPlainText(QString::number(solution));
-    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + tr("=") + QString::number(solution));
+    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + displayVal + tr("=") + QString::number(solution));
     ui->HistoryLine->append("\n");
 
 
@@ -370,7 +371,7 @@ void MainWindow::EqualButtonPressed(){
         subTrigger = false;
     }
     ui->Display->setPlainText(QString::number(solution));
-    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + tr("=") + QString::number(solution));
+    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + displayVal + tr("=") + QString::number(solution));
     ui->HistoryLine->append("\n");
 
 
@@ -394,6 +395,8 @@ void MainWindow::ClearButtonPressed(QAbstractButton*){
         double dblDisplayVal = displayVal.toDouble();
         double dblDisplayValCLEAR = 0 * dblDisplayVal;
         ui->Display->setPlainText(QString::number(dblDisplayValCLEAR));
+        ui->HistoryLine->setPlainText(QString::number(dblDisplayValCLEAR));
+
 
 
     }
@@ -406,6 +409,8 @@ void MainWindow::ClearButtonPressed(){
         double dblDisplayVal = displayVal.toDouble();
         double dblDisplayValCLEAR = 0 * dblDisplayVal;
         ui->Display->setPlainText(QString::number(dblDisplayValCLEAR));
+        ui->HistoryLine->setPlainText(QString::number(dblDisplayValCLEAR));
+
 
 
     }
@@ -415,7 +420,6 @@ void MainWindow::DeleteButtonPressed(QAbstractButton*)
 {
 
     QString displayLabel = ui->Display->toPlainText();
-    QString displayHistory = ui->HistoryLine->toPlainText();
 
 
 
@@ -426,11 +430,9 @@ void MainWindow::DeleteButtonPressed(QAbstractButton*)
 
 
     displayLabel.QString::chop(1);
-    displayHistory.QString::chop(1);
 
 
     ui->Display->setPlainText(displayLabel);
-    ui->HistoryLine->setPlainText(displayHistory);
 
 }
 
@@ -440,7 +442,6 @@ void MainWindow::DeleteButtonPressed()
 {
 
     QString displayLabel = ui->Display->toPlainText();
-    QString displayHistory = ui->HistoryLine->toPlainText();
 
 
 
@@ -451,10 +452,7 @@ void MainWindow::DeleteButtonPressed()
 
 
     displayLabel.QString::chop(1);
-    displayHistory.QString::chop(1);
-    //Set number back to display
     ui->Display->setPlainText(displayLabel);
-    ui->HistoryLine->setPlainText(displayHistory);
 
 
 }
@@ -465,7 +463,6 @@ void MainWindow::PointButton()
     QString displayVal = ui->Display->toPlainText();
 
     ui->Display->setText(displayVal+".");
-    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + ".");
 
 }
 
@@ -475,12 +472,10 @@ void MainWindow::PointButton(QAbstractButton*)
     QString displayVal = ui->Display->toPlainText();
 
     ui->Display->setText(displayVal+".");
-    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + ".");
 }
 
     void MainWindow::keyPressEvent(QKeyEvent *e) {
         switch (e->key()) {
-        //Numbers
         case Qt::Key_1:
             NumPressed(ui->Button1);
             break;
@@ -537,7 +532,6 @@ void MainWindow::PointButton(QAbstractButton*)
             break;
         }
     }
-
 
 
 

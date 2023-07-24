@@ -621,6 +621,12 @@ padding: 5px;
         <pointsize>30</pointsize>
        </font>
       </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
      </widget>
     </item>
     <item row="5" column="0">

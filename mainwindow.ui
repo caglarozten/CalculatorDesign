@@ -611,6 +611,18 @@ padding: 5px;
       </property>
      </widget>
     </item>
+    <item row="0" column="0" colspan="5">
+     <widget class="QTextEdit" name="HistoryLine">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>30</pointsize>
+       </font>
+      </property>
+     </widget>
+    </item>
     <item row="5" column="0">
      <widget class="QPushButton" name="Button1">
       <property name="styleSheet">
@@ -706,25 +718,6 @@ padding: 5px;
       </property>
      </widget>
     </item>
-    <item row="6" column="3">
-     <widget class="QPushButton" name="subtractor">
-      <property name="styleSheet">
-       <string notr="true">QPushButton{
-background-color: #00FFFF;
-border: 1px solid gray;
-padding: 5px;
-}
-QPushButton:pressed{
-background-color: #A9A9A9;
-border: 1px solid gray;
-padding: 5px;
-}</string>
-      </property>
-      <property name="text">
-       <string>-</string>
-      </property>
-     </widget>
-    </item>
     <item row="4" column="1">
      <widget class="QPushButton" name="Button5">
       <property name="styleSheet">
@@ -802,7 +795,7 @@ padding: 5px;
      </widget>
     </item>
     <item row="4" column="4">
-     <widget class="QPushButton" name="MEMclear">
+     <widget class="QPushButton" name="PointButton">
       <property name="styleSheet">
        <string notr="true">QPushButton{
 background-color: #00FFFF;
@@ -816,7 +809,7 @@ padding: 5px;
 }</string>
       </property>
       <property name="text">
-       <string>M-</string>
+       <string>.</string>
       </property>
      </widget>
     </item>
@@ -839,18 +832,6 @@ padding: 5px;
       </property>
      </widget>
     </item>
-    <item row="0" column="0" colspan="5">
-     <widget class="QTextEdit" name="HistoryLine">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>30</pointsize>
-       </font>
-      </property>
-     </widget>
-    </item>
     <item row="6" column="0">
      <widget class="QPushButton" name="Clear">
       <property name="styleSheet">
@@ -867,6 +848,25 @@ padding: 5px;
       </property>
       <property name="text">
        <string>AC</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="3">
+     <widget class="QPushButton" name="subtractor">
+      <property name="styleSheet">
+       <string notr="true">QPushButton{
+background-color: #00FFFF;
+border: 1px solid gray;
+padding: 5px;
+}
+QPushButton:pressed{
+background-color: #A9A9A9;
+border: 1px solid gray;
+padding: 5px;
+}</string>
+      </property>
+      <property name="text">
+       <string>-</string>
       </property>
      </widget>
     </item>

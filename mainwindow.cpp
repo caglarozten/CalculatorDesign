@@ -2,11 +2,12 @@
 #include "qobjectdefs.h"
 #include "ui_mainwindow.h"
 
-double calcVal = 0.0;
+static double calcVal = 0.0;
 bool divTrigger = false;
 bool multTrigger = false;
 bool addTrigger = false;
 bool subTrigger = false;
+bool oldnumber = false;
 
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
@@ -150,7 +151,24 @@ MainWindow::MainWindow(QWidget *parent):
         this,
         SLOT(DeleteButtonPressed())
         );
+    connect(
 
+
+        ui->PointButton,
+        SIGNAL(released(QAbstractButton  *)),
+        this,
+        SLOT(PointButton(QAbstractButton *)))
+
+        ;
+    connect(
+
+
+        ui->PointButton,
+        SIGNAL(released()),
+        this,
+        SLOT(PointButton()))
+
+        ;
 
 
 
@@ -188,6 +206,7 @@ void MainWindow::NumPressed(QAbstractButton *button)
         QString newVal = displayVal + butVal;
                 double dblNewVal = newVal.toDouble();
         ui->Display->setPlainText(QString::number(dblNewVal, 'g',16));
+
 
 
 
@@ -318,6 +337,10 @@ void MainWindow::EqualButtonPressed(QAbstractButton*){
     }
     ui->Display->setPlainText(QString::number(solution));
     ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + tr("=") + QString::number(solution));
+    ui->HistoryLine->append("\n");
+
+
+
 
 }
 
@@ -348,6 +371,8 @@ void MainWindow::EqualButtonPressed(){
     }
     ui->Display->setPlainText(QString::number(solution));
     ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + tr("=") + QString::number(solution));
+    ui->HistoryLine->append("\n");
+
 
 
 
@@ -369,7 +394,7 @@ void MainWindow::ClearButtonPressed(QAbstractButton*){
         double dblDisplayVal = displayVal.toDouble();
         double dblDisplayValCLEAR = 0 * dblDisplayVal;
         ui->Display->setPlainText(QString::number(dblDisplayValCLEAR));
-        ui->HistoryLine->setPlainText("");
+
 
     }
 }
@@ -381,7 +406,7 @@ void MainWindow::ClearButtonPressed(){
         double dblDisplayVal = displayVal.toDouble();
         double dblDisplayValCLEAR = 0 * dblDisplayVal;
         ui->Display->setPlainText(QString::number(dblDisplayValCLEAR));
-        ui->HistoryLine->setPlainText("");
+
 
     }
 }
@@ -390,6 +415,8 @@ void MainWindow::DeleteButtonPressed(QAbstractButton*)
 {
 
     QString displayLabel = ui->Display->toPlainText();
+    QString displayHistory = ui->HistoryLine->toPlainText();
+
 
 
     if (displayLabel.length() == 0) {
@@ -399,8 +426,12 @@ void MainWindow::DeleteButtonPressed(QAbstractButton*)
 
 
     displayLabel.QString::chop(1);
+    displayHistory.QString::chop(1);
+
 
     ui->Display->setPlainText(displayLabel);
+    ui->HistoryLine->setPlainText(displayHistory);
+
 }
 
 
@@ -409,6 +440,7 @@ void MainWindow::DeleteButtonPressed()
 {
 
     QString displayLabel = ui->Display->toPlainText();
+    QString displayHistory = ui->HistoryLine->toPlainText();
 
 
 
@@ -419,10 +451,33 @@ void MainWindow::DeleteButtonPressed()
 
 
     displayLabel.QString::chop(1);
+    displayHistory.QString::chop(1);
     //Set number back to display
     ui->Display->setPlainText(displayLabel);
+    ui->HistoryLine->setPlainText(displayHistory);
+
 
 }
+
+
+void MainWindow::PointButton()
+{
+    QString displayVal = ui->Display->toPlainText();
+
+    ui->Display->setText(displayVal+".");
+    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + ".");
+
+}
+
+
+void MainWindow::PointButton(QAbstractButton*)
+{
+    QString displayVal = ui->Display->toPlainText();
+
+    ui->Display->setText(displayVal+".");
+    ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + ".");
+}
+
     void MainWindow::keyPressEvent(QKeyEvent *e) {
         switch (e->key()) {
         //Numbers
@@ -476,6 +531,9 @@ void MainWindow::DeleteButtonPressed()
             break;
         case Qt::Key_Backspace:
             DeleteButtonPressed(ui->Clear);
+            break;
+        case Qt::Key_Period:
+            PointButton(ui->PointButton);
             break;
         }
     }

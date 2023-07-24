@@ -34,6 +34,8 @@ private slots:
     void EqualButtonPressed();
     void ClearButtonPressed();
     void DeleteButtonPressed();
+    void PointButton();
+    void PointButton(QAbstractButton *button);
 
 
 

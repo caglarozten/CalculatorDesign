@@ -185,7 +185,6 @@ MainWindow::MainWindow(QWidget *parent):
 
 
 
-
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -275,6 +274,7 @@ void MainWindow::MathButtonPressed(QAbstractButton *button)
 
     ui->Display->setPlainText("");
     ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + displayVal + butVal);
+    ui->HistoryLine->verticalScrollBar()->setSliderPosition(ui->HistoryLine->verticalScrollBar()->maximum());
 
 }
 
@@ -309,6 +309,8 @@ void MainWindow::MathButtonPressed()
 
     ui->Display->setPlainText("");
     ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + displayVal + butVal);
+    ui->HistoryLine->verticalScrollBar()->setSliderPosition(ui->HistoryLine->verticalScrollBar()->maximum());
+
 
 }
 void MainWindow::EqualButtonPressed(QAbstractButton*){
@@ -339,6 +341,8 @@ void MainWindow::EqualButtonPressed(QAbstractButton*){
     ui->Display->setPlainText(QString::number(solution));
     ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + displayVal + tr("=") + QString::number(solution));
     ui->HistoryLine->append("\n");
+    ui->HistoryLine->verticalScrollBar()->setSliderPosition(ui->HistoryLine->verticalScrollBar()->maximum());
+
 
 
 
@@ -373,6 +377,8 @@ void MainWindow::EqualButtonPressed(){
     ui->Display->setPlainText(QString::number(solution));
     ui->HistoryLine->setPlainText(ui->HistoryLine->toPlainText() + displayVal + tr("=") + QString::number(solution));
     ui->HistoryLine->append("\n");
+    ui->HistoryLine->verticalScrollBar()->setSliderPosition(ui->HistoryLine->verticalScrollBar()->maximum());
+
 
 
 

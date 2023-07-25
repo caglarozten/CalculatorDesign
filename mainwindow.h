@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QKeyEvent>
 #include <QAbstractButton>
+#include <QScrollBar>
 
 
 QT_BEGIN_NAMESPACE
